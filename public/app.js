@@ -26,7 +26,7 @@ async function join() {
   nickname = document.getElementById("nickname").value;
   room = document.getElementById("room").value;
 
-  socket = new WebSocket("wss://https://kcall-2.onrender.com");
+  socket = new WebSocket("wss://https://kcall2.onrender.com");
 
   socket.onopen = () => {
     socket.send(JSON.stringify({ type: "join", room, nickname }));
@@ -94,3 +94,4 @@ function endCall() {
   createPeer();
 
 }
+
