@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>KCall</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#111827">
+</head>
+<body>
+
+<div class="container">
+  <div class="join">
+    <input id="nickname" placeholder="Nickname">
+    <input id="room" placeholder="Room ID">
+    <button onclick="join()">Join</button>
+  </div>
+
+  <div class="chat">
+    <div id="messages"></div>
+    <div class="msg-box">
+      <input id="msg" placeholder="Message">
+      <button onclick="sendMsg()">Send</button>
+    </div>
+  </div>
+
+  <div class="call">
+    <button onclick="startCall()">Start Call</button>
+    <button onclick="endCall()">End Call</button>
+  </div>
+</div>
+
+<audio id="remoteAudio" autoplay></audio>
+
+<script src="app.js"></script>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}
+</script>
+</body>
+</html>
