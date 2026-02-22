@@ -2,8 +2,8 @@
 let socket;
 let peer;
 let localStream;
-let nickname;
-let room;
+window.nickname = "";
+window.room = "";
 
 // Для переподключения
 let reconnectAttempts = 0;
@@ -203,15 +203,15 @@ function handleWebSocketMessage(data) {
   console.log("Received:", data);
 
   if (data.type === "msg") {
-    addMsg(data.nickname + ": " + data.text, "friend");
+    addMsg((data.nickname || "Unknown") + ": " + data.text, "friend");
   }
 
   if (data.type === "joinNotice") {
-    addMsg(data.nickname + " joined", "system");
+    addMsg((data.nickname || "User") + " joined", "system");
   }
 
   if (data.type === "leave" || data.type === "bye") {
-    addMsg(data.nickname + " left", "system");
+    addMsg((data.nickname || "User") + " left", "system");
     // Если это был наш собеседник, сбрасываем статус звонка
     setCallStatus(false);
     if (peer) {
@@ -272,7 +272,9 @@ async function handleAnswer(answer) {
 
 async function handleCandidate(candidate) {
   try {
-    await peer.addIceCandidate(new RTCIceCandidate(candidate));
+    if (peer) {
+  await peer.addIceCandidate(new RTCIceCandidate(candidate));
+    }
   } catch (err) {
     console.error("ICE error:", err);
   }
@@ -307,6 +309,7 @@ function sendMsg() {
 }
 
 async function startCall() {
+  if (!peer) createPeer();
   if (!socket || socket.readyState !== WebSocket.OPEN) {
     addMsg("No connection to server", "system");
     return;
